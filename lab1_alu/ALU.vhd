@@ -17,18 +17,36 @@ architecture data_flow of ALU is -- should it be called behavioral?
 	type t_operation is (OP_ADD, OP_SUB, OP_AND, OP_OR, OP_XOR, OP_NOT, OP_MOV, OP_Zero);
 begin
 	proc : process(OP, A, B)
+		variable v_Sum :    STD_LOGIC_VECTOR(N - 1 downto 0);
 	begin
 		case (t_operation'val(to_integer(unsigned(OP)))) is
-			when OP_ADD => Sum <= std_logic_vector(unsigned(A) + unsigned(B));
-			when OP_SUB => Sum <= std_logic_vector(unsigned(A) - unsigned(B));
-			when OP_AND => Sum <= A and B;
-			when OP_OR 	=> Sum <= A or B;
-			when OP_XOR => Sum <= A xor B;
-			when OP_NOT => Sum <= not A;
-			when OP_MOV => Sum <= A;
-			when OP_Zero=> Sum <= (others => '0');
+			when OP_ADD => v_Sum := std_logic_vector(unsigned(A) + unsigned(B));
+			when OP_SUB => v_Sum := std_logic_vector(unsigned(A) - unsigned(B));
+			when OP_AND => v_Sum := A and B;
+			when OP_OR 	=> v_Sum := A or B;
+			when OP_XOR => v_Sum := A xor B;
+			when OP_NOT => v_Sum := not A;
+			when OP_MOV => v_Sum := A;
+			when OP_Zero=> v_Sum := (others => '0');
 		end case;
-	
+
+	Sum <= v_Sum;
 	-- flags
+	Z_Flag <= nor v_Sum ;
+	N_Flag <= v_Sum(N - 1) and '1';
+    -- this could be implemented easier if we know the carry value but it is implemented by the compiler
+    if (A(N - 1) = '1' and B(N - 1) = '1') then -- if bits before are the same but the result is different we have overflow
+        if v_Sum(N - 1) = '0' then
+            O_Flag <= '1';
+        else
+            O_Flag <= '0';
+        end if;
+    elsif (A(N - 1) = '0' and B(N - 1) = '0') then
+        if v_Sum(N - 1) = '1' then
+            O_Flag <= '1';
+        else
+            O_Flag <= '0';
+        end if;
+    end if;
 	end process proc;
 end data_flow;
