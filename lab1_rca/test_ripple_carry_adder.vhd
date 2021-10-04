@@ -9,23 +9,23 @@ end ripple_carry_adder_tb;
 architecture tb of ripple_carry_adder_tb is
 	component ripple_carry_adder is
 			generic (N	: INTEGER);
-			port (a 		: in STD_LOGIC_VECTOR(N - 1 downto 0);
-					b		: in STD_LOGIC_VECTOR(N - 1 downto 0);
-					sum	: out STD_LOGIC_VECTOR(N downto 0));
+			port (a 	: in STD_LOGIC_VECTOR(N - 1 downto 0);
+                  b		: in STD_LOGIC_VECTOR(N - 1 downto 0);
+				  sum	: out STD_LOGIC_VECTOR(N downto 0));
 	end component;
-	
+
 	signal clk			: STD_ULOGIC := '0';
-	
+
 	signal tt_a			: STD_LOGIC_VECTOR(3 downto 0);
 	signal tt_b 		: STD_LOGIC_VECTOR(3 downto 0);
 	signal tt_sum		: STD_LOGIC_VECTOR(4 downto 0);
-	signal tt_rtl_sum : STD_LOGIC_VECTOR(4 downto 0);
+	signal tt_rtl_sum   : STD_LOGIC_VECTOR(4 downto 0);
 begin
 	DUT_ripple_carry_adder : ripple_carry_adder generic map (N => 4)
-															  port map (a => tt_a,
-																			b => tt_b,
-																			sum => tt_sum);
-																			
+                                                port map (a => tt_a,
+                                                          b => tt_b,
+                                                          sum => tt_sum);
+
 	clk <= not clk after 5 ns;
 	process
 	begin

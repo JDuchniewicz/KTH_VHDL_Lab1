@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity ALU is
-	generic (N : INTEGER := 4); -- lol default value??
+	generic (N : INTEGER := 4); -- default value??
 	port (OP		: in STD_LOGIC_VECTOR(2 downto 0);
 			A		: in STD_LOGIC_VECTOR(N - 1 downto 0);
 			B		: in STD_LOGIC_VECTOR(N - 1 downto 0);
