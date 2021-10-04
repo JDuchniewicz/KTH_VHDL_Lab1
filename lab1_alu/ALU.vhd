@@ -15,6 +15,16 @@ end ALU;
 
 architecture data_flow of ALU is -- should it be called behavioral?
 	type t_operation is (OP_ADD, OP_SUB, OP_AND, OP_OR, OP_XOR, OP_NOT, OP_MOV, OP_Zero);
+
+    function nor_reduction(vec : IN STD_LOGIC_VECTOR) return STD_LOGIC is
+        variable v_res : STD_LOGIC := '1';
+    begin
+        for i in vec'range loop
+            v_res := v_res nor vec(i);
+        end loop;
+        return v_res;
+    end function;
+
 begin
 	proc : process(OP, A, B)
 		variable v_Sum :    STD_LOGIC_VECTOR(N - 1 downto 0);
@@ -32,7 +42,7 @@ begin
 
 	Sum <= v_Sum;
 	-- flags
-	Z_Flag <= nor v_Sum ;
+    Z_Flag <= nor_reduction(v_Sum); -- need a function for reduction because quartus does not implement unary operators -.-
 	N_Flag <= v_Sum(N - 1) and '1';
     -- this could be implemented easier if we know the carry value but it is implemented by the compiler
     if (A(N - 1) = '1' and B(N - 1) = '1') then -- if bits before are the same but the result is different we have overflow
@@ -47,6 +57,8 @@ begin
         else
             O_Flag <= '0';
         end if;
+    else
+        O_Flag <= '0';
     end if;
 	end process proc;
 end data_flow;

@@ -29,7 +29,7 @@ architecture tb of ALU_tb is
     --signal tt_rtl_result: STD_LOGIC_VECTOR(1 downto 0); should this be tested as well?
 
 begin
-    DUT_ALU : ALU   generic map (N => 2)
+    DUT_ALU : ALU   generic map (N => 3)
                     port map (OP => t_OP,
                               A => t_A,
                               B => t_B,
@@ -47,7 +47,7 @@ begin
         t_A <= (others => '0');
         t_B <= (others => '0'); -- test for Z_Flag
         wait for 10 ns;
-        assert t_Z_Flag = '1' and t_Sum = '0'
+        assert t_Z_Flag = '1'
             report "Error OP_ADD Z_Flag test. Sum = " & integer'image(to_integer(unsigned(t_Sum)))
             severity error;
 
@@ -98,7 +98,7 @@ begin
         t_OP <= "101";
         t_A <= "101";
         wait for 10 ns;
-        assert t_Sum = "101"
+        assert t_Sum = "010"
             report "Error OP_NOT test. Sum = " & integer'image(to_integer(unsigned(t_Sum)))
             severity error;
 
@@ -115,7 +115,7 @@ begin
         -- OP_Zero
         t_OP <= "111";
         wait for 10 ns;
-        assert t_Z_Flag = '1' and t_Sum = '0'
+        assert t_Z_Flag = '1' and t_Sum = "000"
             report "Error OP_Zero Z_Flag test. Sum = " & integer'image(to_integer(unsigned(t_Sum)))
             severity error;
 
