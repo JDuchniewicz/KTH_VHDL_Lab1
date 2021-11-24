@@ -17,7 +17,7 @@ architecture data_flow of ALU is -- should it be called behavioral?
 	type t_operation is (OP_ADD, OP_SUB, OP_AND, OP_OR, OP_XOR, OP_NOT, OP_MOV, OP_Zero);
 
     function nor_reduction(vec : IN STD_LOGIC_VECTOR) return STD_LOGIC is
-        variable v_res : STD_LOGIC := '1';
+        variable v_res : STD_LOGIC := '0';
     begin
         for i in vec'range loop
             v_res := v_res nor vec(i);

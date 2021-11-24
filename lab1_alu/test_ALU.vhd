@@ -26,7 +26,6 @@ architecture tb of ALU_tb is
     signal t_Z_Flag     : STD_LOGIC;
     signal t_N_Flag     : STD_LOGIC;
     signal t_O_Flag     : STD_LOGIC;
-    --signal tt_rtl_result: STD_LOGIC_VECTOR(1 downto 0); should this be tested as well?
 
 begin
     DUT_ALU : ALU   generic map (N => 3)
